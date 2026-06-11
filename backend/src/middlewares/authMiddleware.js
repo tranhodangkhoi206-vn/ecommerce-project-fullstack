@@ -21,7 +21,7 @@ export const protectedRoute = async (req, res, next) => {
         if (err) {
           console.error(err);
           return res
-            .status(401)
+            .status(403)
             .json({ message: "Access token không đúng hoặc đã hết hạn" });
         }
 

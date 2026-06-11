@@ -4,9 +4,10 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "../utils/generateToken.js";
+import jwt from "jsonwebtoken";
 import Session from "../models/Session.js";
 
-const ACCESS_TOKEN_TTL = "30m";
+const ACCESS_TOKEN_TTL = "10s";
 const REFRESH_TOKEN_TTL = 1000 * 60 * 60 * 24 * 14;
 
 export const signUp = async (req, res) => {
@@ -23,7 +24,9 @@ export const signUp = async (req, res) => {
     // Kiểm tra người dùng đã tồn tại chưa
     const duplicate = await User.findOne({ username });
     if (duplicate) {
-      return res.status(409).json({ message: "Người dùng đã tồn tại, trùng username" });
+      return res
+        .status(409)
+        .json({ message: "Người dùng đã tồn tại, trùng username" });
     }
 
     // Mã hóa mật khẩu
@@ -81,6 +84,56 @@ export const signIn = async (req, res) => {
     });
   } catch (error) {
     console.error("Lỗi khi gọi signUp: ", error);
+    return res.status(500).json({ message: "Lỗi hệ thống" });
+  }
+};
+
+export const signOut = async (req, res) => {
+  try {
+    // Lấy refreshToken
+    const refreshToken = req.cookies?.refreshToken;
+    if (refreshToken) {
+      // Xóa phiên đăng nhập
+      await Session.deleteOne({ refreshToken });
+
+      // Xóa refreshToken ở cookies
+      res.clearCookie("refreshToken");
+    }
+
+    return res.sendStatus(204);
+  } catch (error) {
+    console.error("Lỗi khi gọi signOut", error);
+    return res.status(500).json({ message: "Lỗi hệ thống" });
+  }
+};
+
+export const refresh = async (req, res) => {
+  try {
+    // Lấy refreshToken từ client
+    const refreshToken = req.cookies?.refreshToken;
+
+    if (!refreshToken) {
+      return res.status(401).json({ message: "Refresh token không tồn tại" });
+    }
+
+    // So sánh với refreshToken trong database
+    const session = await Session.findOne({ refreshToken });
+
+    if (!session) {
+      return res
+        .status(403)
+        .json({ message: "Refresh token không hợp lệ hoặc hết hạn" });
+    }
+
+    if (session.expiresAt < new Date()) {
+      return res.status(403).json({ message: "Refresh token đã hết hạn" });
+    }
+
+    const accessToken = generateAccessToken(session.userId, ACCESS_TOKEN_TTL);
+
+    return res.status(200).json({ accessToken: accessToken });
+  } catch (error) {
+    console.error(error);
     return res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };

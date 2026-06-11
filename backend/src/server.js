@@ -5,6 +5,8 @@ import dns from "dns";
 import authRouter from "./routes/authRoute.js";
 import { protectedRoute } from "./middlewares/authMiddleware.js";
 import userRouter from "./routes/userRoute.js";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 
 // Thiết lập dns của google
 dns.setServers(["8.8.8.8"], ["8.8.4.4"]);
@@ -16,6 +18,8 @@ const PORT = process.env.PORT || 5001;
 
 // Middleware
 app.use(express.json());
+app.use(cookieParser());
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
 // Public route
 app.use("/api/auth", authRouter);

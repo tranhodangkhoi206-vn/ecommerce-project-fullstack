@@ -3,6 +3,8 @@ import { Toaster } from "sonner";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
 import UserProfilePage from "./pages/UserProfilePage";
+import HomePage from "./pages/HomePage";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 const App = () => {
   return (
@@ -10,6 +12,9 @@ const App = () => {
       <Toaster richColors />
       <BrowserRouter>
         <Routes>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<HomePage />} />
+          </Route>
           <Route path="/users/me" element={<UserProfilePage />} />
           <Route path="/signin" element={<SigninPage />} />
           <Route path="/signup" element={<SignupPage />} />
