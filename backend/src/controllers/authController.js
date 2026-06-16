@@ -4,10 +4,10 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "../utils/generateToken.js";
-import jwt from "jsonwebtoken";
 import Session from "../models/Session.js";
+import CartItem from "../models/Cart.js";
 
-const ACCESS_TOKEN_TTL = "10s";
+const ACCESS_TOKEN_TTL = "15m";
 const REFRESH_TOKEN_TTL = 1000 * 60 * 60 * 24 * 14;
 
 export const signUp = async (req, res) => {
@@ -38,6 +38,7 @@ export const signUp = async (req, res) => {
       hashedPassword,
       displayName: `${firstname} ${lastname}`,
     });
+
     return res.sendStatus(204);
   } catch (error) {
     console.error("Lỗi khi gọi signUp: ", error);

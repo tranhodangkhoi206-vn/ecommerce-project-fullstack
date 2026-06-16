@@ -28,6 +28,20 @@ const userSchema = new mongoose.Schema(
     avatarUrl: {
       type: String,
     },
+    role: {
+      type: String,
+      required: true,
+      enum: ["CUSTOMER", "SELLER"],
+      default: "CUSTOMER",
+    },
+    address: {
+      type: String,
+      default: null,
+    },
+    phone: {
+      type: String,
+      default: null,
+    },
   },
   { timestamps: true },
 );

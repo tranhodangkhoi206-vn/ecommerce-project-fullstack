@@ -44,3 +44,26 @@ export const protectedRoute = async (req, res, next) => {
     return res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };
+
+export const authorizeRoute = async (req, res, next) => {
+  try {
+    const user = req.user;
+
+    if (!user) {
+      return res.status(401).json({
+        message: "Người dùng chưa xác thực hoặc chưa đăng nhập",
+      });
+    }
+    const role = user.role;
+    if (role !== "SELLER") {
+      return res
+        .status(403)
+        .json({ message: "Không có quyền truy cập chức năng này" });
+    }
+
+    next();
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Lỗi hệ thống" });
+  }
+};

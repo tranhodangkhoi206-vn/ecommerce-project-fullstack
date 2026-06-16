@@ -1,3 +1,4 @@
+import type { Product } from "./product";
 import type { User } from "./user";
 
 export interface AuthState {
@@ -18,4 +19,10 @@ export interface AuthState {
   signOut: () => void;
   refresh: () => Promise<void>;
   profile: () => Promise<void>;
+}
+
+export interface ProductState {
+  loading: boolean;
+  products: [Product] | [];
+  getProduct: () => Promise<void>;
 }
