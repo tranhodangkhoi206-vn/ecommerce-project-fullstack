@@ -13,6 +13,7 @@ const cartItemSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "Product",
         },
+        // Số lượng sản phẩm
         quantity: {
           type: Number,
           max: 100,
@@ -20,12 +21,14 @@ const cartItemSchema = new mongoose.Schema(
           default: 1,
           required: true,
         },
+        // Giá thành của sản phẩm
         price: {
           type: Number,
           required: true,
           min: 0,
         },
-        totalPrice: {
+        // Tổng tiền nguyên bản trước khi thêm các loại phí khác
+        subtotal: {
           type: Number,
           required: true,
           min: 0,

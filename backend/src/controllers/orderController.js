@@ -1,6 +1,6 @@
 import Order from "../models/Order.js";
 import Product from "../models/Product.js";
-import ShippingOption from "../models/ShippingOption.js";
+import ShippingOption from "../models/DeliveryOption.js";
 import Voucher from "../models/Voucher.js";
 
 export const createOrder = async (req, res) => {

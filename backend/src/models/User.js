@@ -1,5 +1,23 @@
 import mongoose from "mongoose";
 
+const addressSchema = new mongoose.Schema({
+  // Tỉnh thành
+  province: {
+    type: String,
+    default: null,
+  },
+  // Quận/huyện
+  district: {
+    type: String,
+    default: null,
+  },
+  // Đường
+  street: {
+    type: String,
+    default: null,
+  },
+});
+
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -30,17 +48,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      required: true,
       enum: ["CUSTOMER", "SELLER"],
       default: "CUSTOMER",
-    },
-    address: {
-      type: String,
-      default: null,
-    },
-    phone: {
-      type: String,
-      default: null,
     },
   },
   { timestamps: true },

@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import getDiscountPrice from "../utils/getDiscountPrice.js";
 
 const reviewSchema = new mongoose.Schema(
   {
@@ -8,11 +7,11 @@ const reviewSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    content: {
+    feedback: {
       type: String,
       trim: true,
     },
-    ratingStar: {
+    starRating: {
       type: Number,
       required: true,
       max: 5,
@@ -29,13 +28,13 @@ const productSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    name: {
+    productName: {
       type: String,
       required: true,
       trim: true,
       index: true,
     },
-    price: {
+    orginalPrice: {
       type: Number,
       required: true,
       min: 0,
@@ -43,6 +42,7 @@ const productSchema = new mongoose.Schema(
     isSale: {
       type: Boolean,
       required: true,
+      default: false,
     },
     discountPercent: {
       type: Number,
@@ -50,28 +50,27 @@ const productSchema = new mongoose.Schema(
       min: 0,
       max: 100,
     },
-    priceAfterSale: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
     description: {
       type: String,
       required: true,
     },
+    // Số sao trung bình
     averageRating: {
       type: Number,
       default: 0,
     },
+    // Tổng số đánh giá
     reviewCount: {
       type: Number,
       default: 0,
     },
+    // Số hượng hàng tồn trong kho
     stockQuantity: {
       type: Number,
       required: true,
       min: 0,
     },
+    // Số lượng hàng đã bán
     quantitySold: {
       type: Number,
       default: 0,
