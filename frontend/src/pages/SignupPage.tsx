@@ -1,8 +1,6 @@
 import { Zap } from "lucide-react";
 import { SignupForm } from "@/components/auth/signup-form.tsx";
 
-
-
 export default function SignupPage() {
   return (
     <>
@@ -23,3 +21,4 @@ export default function SignupPage() {
     </>
   );
 }
+
